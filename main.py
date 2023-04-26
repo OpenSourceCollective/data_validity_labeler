@@ -82,19 +82,22 @@ with st.form("entry_form", clear_on_submit=True):
         with col3:
             score = st.number_input(
                 f"{record.record_id} Score",
-                value=4,
+                value=0,
                 step=1,
                 max_value=5,
-                min_value=1,
+                min_value=0,
                 label_visibility="hidden",
             )
-            item["expert_validity"] += [
-                {
-                    "expert_id": 1234,  # TODO: assign unique ids to experts
-                    "score": score,
-                    "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                }
-            ]
+            if score > 0:
+                item["expert_validity"] += [
+                    {
+                        "expert_id": 1234,  # TODO: assign unique ids to experts
+                        "score": score,
+                        "created_at": datetime.now().strftime(
+                            "%Y-%m-%d %H:%M:%S"
+                        ),
+                    }
+                ]
         st.markdown("---")
 
     submitted = st.form_submit_button(
