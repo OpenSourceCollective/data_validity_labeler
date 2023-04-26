@@ -63,3 +63,9 @@ DETA_KEY=c0wu41vosct_5SUqzfTVqfdjNc4wcWGNeNYZWHDBGu4Y
 ```
 
 > Note that the above key will be replaced in production. It should be used only for testing purposes.
+
+- Start the app with:
+
+```bash
+streamlit run main.py
+```
