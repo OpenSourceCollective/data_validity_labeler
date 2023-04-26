@@ -30,7 +30,7 @@ st.write(
     "This is a simple app to check and label the validity of electronic health records."
 )
 st.markdown("---")
-st.subheader("Sample Data Fetching")
+st.subheader("Patient Vitals Validation")
 
 
 @st.cache_data()
@@ -41,7 +41,7 @@ def get_patient_ids() -> int:
 
 
 @st.cache_data()
-def get_sample_data(limit: int = 5) -> pd.DataFrame:
+def get_patient_data(limit: int = 5) -> pd.DataFrame:
     # TODO: replace with actual data
     got_data = False
     while not got_data:  # some samples dont have data
@@ -57,7 +57,7 @@ expert_name = st.text_input(
 )
 
 with st.form("entry_form", clear_on_submit=True):
-    patient_id, sample_data = get_sample_data(10)
+    patient_id, sample_data = get_patient_data(50)
     print(sample_data)
     st.write(f"#### Patient ID: {patient_id}")
     col1, col2, col3 = st.columns(3)
