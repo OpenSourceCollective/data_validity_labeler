@@ -4,6 +4,7 @@ from deta import Deta  # pip install deta
 from src.backend.schema import Record
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -41,7 +42,7 @@ def get_record(record_id: str) -> Record:
     return Record(**record)
 
 
-def fetch_records(query: dict={}, limit: int = 1, last: str = None) -> list:
+def fetch_records(query: dict = {}, limit: int = 1, last: str = None) -> list:
     """Retrieve a list of items matching the query
 
     Args:
@@ -54,6 +55,16 @@ def fetch_records(query: dict={}, limit: int = 1, last: str = None) -> list:
     """
     records = db.fetch(query, limit=limit, last=last)
     return records.items
+
+
+def get_patient_ids() -> list:
+    """Get a list of patient ids
+
+    Returns:
+        list: A list of patient ids
+    """
+    patient_ids = db.get("patients_ids")
+    return patient_ids
 
 
 if __name__ == "__main__":
