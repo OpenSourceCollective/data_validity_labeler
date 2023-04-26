@@ -56,3 +56,10 @@ We intend to update the database by adding an expert_validity field where multip
 
 - Provide a `.env` file where the environment variables are located.
 - The `DETA_KEY` is the API key for the storage in [Deta space](https://deta.space). It is needed to access the cloud-based database. See the [src/backend/database.py](src/backend/database.py) file for more details on the simple interface to the database.
+- Use the following in the `.env` file:
+
+```bash
+DETA_KEY=c0wu41vosct_5SUqzfTVqfdjNc4wcWGNeNYZWHDBGu4Y
+```
+
+> Note that the above key will be replaced in production. It should be used only for testing purposes.
