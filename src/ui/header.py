@@ -22,6 +22,7 @@ def header():
     st.markdown(hide_st_style, unsafe_allow_html=True)
 
     st.title(f"{page_icon} {page_title}er")
+    # TODO: Add a better introduction
     st.write(
         "This is a simple app to check and label the validity of electronic health records."
     )

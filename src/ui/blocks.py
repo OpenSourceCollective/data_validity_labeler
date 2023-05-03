@@ -21,7 +21,7 @@ def get_patient_data(limit: int = 5) -> pd.DataFrame:
     got_data = False
     while not got_data:  # some samples dont have data
         patient_id = random.choice(get_patient_ids())
-        data = db.fetch_records({"patient_id": patient_id}, limit=limit)
+        data = db.fetch_records({"patient_id": patient_id}, limit=1000)
         if len(data) > 0:
             got_data = True
     return patient_id, data
@@ -33,6 +33,7 @@ def patient_data_validation_form() -> None:
     )
     with st.form("entry_form", clear_on_submit=True):
         patient_id, patient_data = get_patient_data(50)
+        print("Received ", len(patient_data), "items.")
         st.write(f"#### Patient ID: {patient_id}")
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -80,7 +81,7 @@ def patient_data_validation_form() -> None:
             # disabled=(expert_name == "")
         )
         if submitted:
-            print("item: ", item)
+            # print("item: ", item)
             # TODO: submit data to database
             st.cache_data.clear()
             st.experimental_rerun()
