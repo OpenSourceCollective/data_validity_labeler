@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Record",
+    "key": "str",
+    "data": "dict"
+  },
+  {
+    "name": "Validity",
+    "key": "str",
+    "data": "dict"
+  }
+]
