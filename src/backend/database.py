@@ -1,7 +1,7 @@
 import os
 
 from deta import Deta  # pip install deta
-from src.backend.schema import Record
+from src.backend.schema import Record, User
 
 from dotenv import load_dotenv
 
@@ -16,6 +16,17 @@ deta = Deta(DETA_KEY)
 
 # This is how to create/connect a database
 db = deta.Base("ehr_1")
+user_db = deta.Base("ehr_2")
+
+
+def create_user(user: User) -> None:
+    user_response = user_db.put(user.to_dict())
+    return user_response
+
+
+def get_users() -> None:
+    records = user_db.fetch({"model": "user"}, limit=1000)
+    return records.items
 
 
 def insert_record(record: Record) -> None:
@@ -25,8 +36,8 @@ def insert_record(record: Record) -> None:
     Args:
         record (Record): The record object
     """
-    record_id = db.put(record.to_dict())
-    return record_id
+    record_response = db.put(record.to_dict())
+    return record_response
 
 
 def get_record(record_id: str) -> Record:

@@ -3,10 +3,9 @@ from typing import List
 import json
 from typing import Dict, Type, TypeVar
 from copy import deepcopy
+import streamlit_authenticator as stauth
 
 schema_config = json.load(open("configs/schema.json", "r"))
-
-# T = TypeVar("T", bound="BaseRecord")
 
 
 class BaseRecord:
@@ -29,6 +28,23 @@ SCHEMA_FACTORY = {}
 for item in schema_config:
     name = item.pop("name")
     SCHEMA_FACTORY[name] = create_dataclass()
+
+
+@dataclass
+class User:
+    username: str
+    password: str
+
+    def __post_init__(self):
+        self.model = "user"
+        self.name = self.username
+        self.key = f"user_{self.username}"
+        # change to hashed password
+        self.password = stauth.Hasher([self.password]).generate()[0]
+
+    def to_dict(self):
+        d = deepcopy(vars(self))
+        return d
 
 
 @dataclass
@@ -63,8 +79,4 @@ class Record:
 
 
 if __name__ == "__main__":
-    Record = SCHEMA_FACTORY["Record"]
-    record = Record("key_1", data={"data1": "value1", "data2": "value2"})
-    print(record.to_dict())
-    record = BaseRecord("key_1", data={"data1": "value1", "data2": "value2"})
-    print(record.to_dict())
+    pass
