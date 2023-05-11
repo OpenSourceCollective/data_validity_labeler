@@ -1,5 +1,60 @@
 from dataclasses import dataclass, asdict, field
-from typing import List
+from typing import List, Optional
+import json
+from typing import Dict, Type, TypeVar
+from copy import deepcopy
+import streamlit_authenticator as stauth
+
+schema_config = json.load(open("configs/schema.json", "r"))
+
+
+class BaseRecord:
+    def __init__(self, key, /, **kwargs):
+        self.key = key
+        for k_, v_ in kwargs.items():
+            setattr(self, k_, v_)
+
+    def to_dict(self):
+        d = deepcopy(vars(self))
+        return d
+
+
+def create_dataclass():
+    return BaseRecord
+
+
+SCHEMA_FACTORY = {}
+
+for item in schema_config:
+    name = item.pop("name")
+    SCHEMA_FACTORY[name] = create_dataclass()
+
+
+@dataclass
+class User:
+    username: str
+    password: Optional[str] = None
+    name: Optional[str] = None
+    model: Optional[str] = None
+    key: Optional[str] = None
+    is_staff: bool = False
+    is_admin: bool = False
+
+    def __post_init__(self):
+        self.model = "user"
+        if self.name is None:
+            self.name = self.username
+        if self.key is None:
+            self.key = f"user_{self.username}"
+        if self.password is not None:
+            self.password = stauth.Hasher([self.password]).generate()[0]
+
+    def to_dict(self):
+        d = deepcopy(vars(self))
+        return d
+
+
+# TODO: Replace this with dynamically created Schema from app config
 
 
 @dataclass
@@ -27,20 +82,12 @@ class Record:
     record_validity: int
     timestamp: int
     vitals_type: str
-    expert_validity: List[ExpertValidity] = field(
-        default_factory=lambda: [])
+    expert_validity: List[ExpertValidity] = field(default_factory=lambda: [])
 
     def to_dict(self):
         return {k: v for k, v in asdict(self).items()}
 
 
 if __name__ == "__main__":
-    expert_validity = ExpertValidity(1, 0.9, "2021-09-01T00:00:00.000Z")
-    sample_record = Record(1, 1, 1, "BP", "mmHg", "8480-6", 120, "Sitting", "Patient", "Patient", "2021-09-01T00:00:00.000Z",
-                           "Patient", "2021-09-01T00:00:00.000Z", 1, 1630454400, "Blood Pressure", [expert_validity])
-    print(sample_record.to_dict())
-
-    sample_record = Record(1, 1, 1, "BP", "mmHg", "8480-6", 120, "Sitting", "Patient", "Patient", "2021-09-01T00:00:00.000Z",
-                           "Patient", "2021-09-01T00:00:00.000Z", 1, 1630454400, "Blood Pressure")
-
-    print(sample_record.to_dict())
+    print(SCHEMA_FACTORY)
+    pass

@@ -7,6 +7,8 @@ import streamlit as st
 import src.backend.database as db
 from src.backend.schema import Record
 
+# TODO: Replace this with dynamically created blocks
+
 
 @st.cache_data()
 def get_patient_ids() -> int:
@@ -21,16 +23,14 @@ def get_patient_data(limit: int = 5) -> pd.DataFrame:
     got_data = False
     while not got_data:  # some samples dont have data
         patient_id = random.choice(get_patient_ids())
-        data = db.fetch_records({"patient_id": patient_id}, limit=limit)
+        data = db.fetch_records({"patient_id": patient_id}, limit=1000)
         if len(data) > 0:
             got_data = True
     return patient_id, data
 
 
 def patient_data_validation_form() -> None:
-    expert_name = st.text_input(
-        "Name", placeholder="Please enter your name", label_visibility="hidden"
-    )
+    st.write(f'Welcome, **{st.session_state["name"]}**')
     with st.form("entry_form", clear_on_submit=True):
         patient_id, patient_data = get_patient_data(50)
         st.write(f"#### Patient ID: {patient_id}")
@@ -77,10 +77,9 @@ def patient_data_validation_form() -> None:
 
         submitted = st.form_submit_button(
             "Save Data",
-            # disabled=(expert_name == "")
         )
         if submitted:
-            print("item: ", item)
+            # print("item: ", item)
             # TODO: submit data to database
             st.cache_data.clear()
             st.experimental_rerun()
