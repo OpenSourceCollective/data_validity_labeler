@@ -1,12 +1,22 @@
 [
   {
     "name": "Record",
-    "key": "str",
-    "data": "dict"
+    "display_fields": {
+      "header": "Recorded Vitals",
+      "fields": [
+        "Temperature",
+        "description",
+        "validity"
+      ]
+    },
+    "display_id": {
+      "header": "Recorded Created",
+      "fields": [
+        "created_at"
+      ]
+    }
   },
   {
-    "name": "Validity",
-    "key": "str",
-    "data": "dict"
+    "name": "Validity"
   }
 ]

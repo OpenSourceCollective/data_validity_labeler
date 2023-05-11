@@ -27,8 +27,14 @@ def create_user(user: User) -> None:
 
 @st.cache_data()
 def get_users() -> None:
-    records = user_db.fetch({"model": "user"}, limit=1000)
+    records = user_db.fetch({"model": "user"})
     return records.items
+
+
+@st.cache_data()
+def get_user(username) -> None:
+    records = user_db.fetch({"username": username}, limit=1)
+    return records.items[0]
 
 
 def insert_record(record: Record) -> None:

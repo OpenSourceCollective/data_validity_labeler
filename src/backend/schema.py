@@ -1,5 +1,5 @@
 from dataclasses import dataclass, asdict, field
-from typing import List
+from typing import List, Optional
 import json
 from typing import Dict, Type, TypeVar
 from copy import deepcopy
@@ -33,18 +33,28 @@ for item in schema_config:
 @dataclass
 class User:
     username: str
-    password: str
+    password: Optional[str] = None
+    name: Optional[str] = None
+    model: Optional[str] = None
+    key: Optional[str] = None
+    is_staff: bool = False
+    is_admin: bool = False
 
     def __post_init__(self):
         self.model = "user"
-        self.name = self.username
-        self.key = f"user_{self.username}"
-        # change to hashed password
-        self.password = stauth.Hasher([self.password]).generate()[0]
+        if self.name is None:
+            self.name = self.username
+        if self.key is None:
+            self.key = f"user_{self.username}"
+        if self.password is not None:
+            self.password = stauth.Hasher([self.password]).generate()[0]
 
     def to_dict(self):
         d = deepcopy(vars(self))
         return d
+
+
+# TODO: Replace this with dynamically created Schema from app config
 
 
 @dataclass
@@ -79,4 +89,5 @@ class Record:
 
 
 if __name__ == "__main__":
+    print(SCHEMA_FACTORY)
     pass

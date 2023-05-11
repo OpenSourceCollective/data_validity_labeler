@@ -7,6 +7,8 @@ import streamlit as st
 import src.backend.database as db
 from src.backend.schema import Record
 
+# TODO: Replace this with dynamically created blocks
+
 
 @st.cache_data()
 def get_patient_ids() -> int:
