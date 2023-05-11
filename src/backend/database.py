@@ -2,6 +2,7 @@ import os
 
 from deta import Deta  # pip install deta
 from src.backend.schema import Record, User
+import streamlit as st
 
 from dotenv import load_dotenv
 
@@ -24,6 +25,7 @@ def create_user(user: User) -> None:
     return user_response
 
 
+@st.cache_data()
 def get_users() -> None:
     records = user_db.fetch({"model": "user"}, limit=1000)
     return records.items

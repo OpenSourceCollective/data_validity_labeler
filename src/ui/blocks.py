@@ -6,7 +6,6 @@ import streamlit as st
 
 import src.backend.database as db
 from src.backend.schema import Record
-from .authenticator import authenticator
 
 
 @st.cache_data()
@@ -29,12 +28,9 @@ def get_patient_data(limit: int = 5) -> pd.DataFrame:
 
 
 def patient_data_validation_form() -> None:
-    # expert_name = st.text_input(
-    #     "Name", placeholder="Please enter your name", label_visibility="hidden"
-    # )
+    st.write(f'Welcome, **{st.session_state["name"]}**')
     with st.form("entry_form", clear_on_submit=True):
         patient_id, patient_data = get_patient_data(50)
-        print("Received ", len(patient_data), "items.")
         st.write(f"#### Patient ID: {patient_id}")
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -79,27 +75,9 @@ def patient_data_validation_form() -> None:
 
         submitted = st.form_submit_button(
             "Save Data",
-            # disabled=(expert_name == "")
         )
         if submitted:
             # print("item: ", item)
             # TODO: submit data to database
             st.cache_data.clear()
             st.experimental_rerun()
-
-
-def authenticated_form():
-    # print(st.session_state.get("authentication_status"))
-    name, authentication_status, username = authenticator.login(
-        "Login", "main"
-    )
-    if authentication_status == False:
-        st.error("Username/password is incorrect")
-
-    if authentication_status == None:
-        st.warning("Please enter your username and password")
-
-    if authentication_status:
-        name = st.session_state["name"]
-        st.write(f"Welcome, **{name}**")
-        patient_data_validation_form()
