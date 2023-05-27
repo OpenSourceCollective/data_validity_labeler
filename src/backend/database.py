@@ -1,10 +1,10 @@
 import os
 
-from deta import Deta  # pip install deta
-from src.backend.schema import Record, User
 import streamlit as st
-
+from deta import Deta
 from dotenv import load_dotenv
+
+from src.backend.schema import RECORD_ID, Record, User
 
 load_dotenv()
 
@@ -76,17 +76,15 @@ def fetch_records(query: dict = {}, limit: int = 1, last: str = None) -> list:
     return records.items
 
 
-def get_patient_ids() -> list:
-    """Get a list of patient ids
+def get_record_ids() -> list:
+    """Get a list of record ids
 
     Returns:
-        list: A list of patient ids
+        list: A list of record ids
     """
-    patient_ids = db.get("patients_ids")
-    return patient_ids
+    record_ids = db.get(RECORD_ID)
+    return record_ids
 
 
 if __name__ == "__main__":
     pass
-
-    print(fetch_records({"record_id": 760}))

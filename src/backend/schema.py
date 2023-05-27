@@ -1,12 +1,21 @@
-from dataclasses import dataclass, asdict, field
-from typing import List, Optional
 import json
-from typing import Dict, Type, TypeVar
 from copy import deepcopy
+from dataclasses import asdict, dataclass, field
+from typing import List, Optional
+
 import streamlit_authenticator as stauth
 from dacite import from_dict
 
 schema_config = json.load(open("configs/schema.json", "r"))
+
+
+@dataclass
+class AppInfo:
+    title: str
+    icon: str
+    description: str
+    subtitle: str
+    subtitle_description: str
 
 
 @dataclass
@@ -34,6 +43,8 @@ class BlockDisplay:
 @dataclass
 class RecordDisplay:
     type: str
+    record_id: str
+    query_id: str
     blocks: List[BlockDisplay]
 
 
@@ -43,12 +54,15 @@ class ValidityDisplay:
     fields: List[FieldDisplay]
 
 
+APP_INFO = from_dict(data_class=AppInfo, data=schema_config["app_info"])
 RECORD_DISPLAY = from_dict(
     data_class=RecordDisplay, data=schema_config["record"]
 )
 VALIDITY_DISPLAY = from_dict(
     data_class=ValidityDisplay, data=schema_config["validity"]
 )
+RECORD_ID = RECORD_DISPLAY.record_id
+QUERY_ID = RECORD_DISPLAY.query_id
 
 
 @dataclass

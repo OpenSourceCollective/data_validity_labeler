@@ -5,33 +5,38 @@ import pandas as pd
 import streamlit as st
 
 import src.backend.database as db
-from src.backend.schema import RECORD_DISPLAY, VALIDITY_DISPLAY, Record, User
+from src.backend.schema import (
+    QUERY_ID,
+    RECORD_DISPLAY,
+    VALIDITY_DISPLAY,
+    Record,
+    User,
+)
 
 
 @st.cache_data()
-def get_patient_ids() -> int:
+def get_record_ids() -> int:
     # TODO: replace with a deterministic fetcher
-    patient_ids = db.get_patient_ids()["data"]
-    return patient_ids
+    return db.get_record_ids()["data"]
 
 
 @st.cache_data()
-def get_patient_data(limit: int = 5) -> pd.DataFrame:
+def get_record_data(limit: int = 5) -> pd.DataFrame:
     # TODO: replace with actual data
     got_data = False
     while not got_data:  # some samples dont have data
-        patient_id = random.choice(get_patient_ids())
-        data = db.fetch_records({"patient_id": patient_id}, limit=1000)
+        record_id = random.choice(get_record_ids())
+        data = db.fetch_records({QUERY_ID: record_id}, limit=1000)
         if len(data) > 0:
             got_data = True
-    return patient_id, data
+    return record_id, data
 
 
 # TODO: Deprecate this
 def patient_data_validation_form() -> None:
     st.write(f'Welcome, **{st.session_state["name"]}**')
     with st.form("entry_form", clear_on_submit=True):
-        patient_id, patient_data = get_patient_data(50)
+        patient_id, patient_data = get_record_data(50)
         st.write(f"#### Patient ID: {patient_id}")
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -87,8 +92,8 @@ def patient_data_validation_form() -> None:
 def record_validation_form(user: User) -> None:
     st.write(f'Welcome, **{st.session_state["name"]}**')
     with st.form("entry_form", clear_on_submit=True):
-        patient_id, patient_data = get_patient_data(50)
-        st.write(f"#### Patient ID: {patient_id}")
+        record_id, record_data = get_record_data(50)
+        st.write(f"#### Record ID: {record_id}")
         col1, col2, col3 = st.columns(3)
         with col1:
             st.write(f"**{RECORD_DISPLAY.blocks[0].header}**")
@@ -96,7 +101,7 @@ def record_validation_form(user: User) -> None:
             st.write(f"**{RECORD_DISPLAY.blocks[1].header}**")
         with col3:
             st.write(f"**{VALIDITY_DISPLAY.fields[0].name}**")
-        for i, item in enumerate(patient_data):
+        for i, item in enumerate(record_data):
             record = item
             col1, col2, col3 = st.columns(3)
             with col1:
@@ -146,7 +151,6 @@ def record_validation_form(user: User) -> None:
             "Save Data",
         )
         if submitted:
-            # print("item: ", item)
             # TODO: submit data to database
             st.cache_data.clear()
             st.experimental_rerun()

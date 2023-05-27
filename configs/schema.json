@@ -1,6 +1,15 @@
 {
+  "app_info": {
+    "title": "Health Record Validity Labeler",
+    "icon": ":health_worker:",
+    "description": "This is a simple app to check and label the validity of electronic health records.",
+    "subtitle": "Patient Vitals Validation",
+    "subtitle_description": "*[Insert instructions here]*"
+  },
   "record": {
     "type": "display",
+    "record_id": "patients_ids",
+    "query_id": "patient_id",
     "blocks": [
       {
         "type": "display",
