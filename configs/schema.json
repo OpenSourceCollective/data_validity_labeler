@@ -1,22 +1,56 @@
 [
   {
-    "name": "Record",
-    "display_fields": {
-      "header": "Recorded Vitals",
-      "fields": [
-        "Temperature",
-        "description",
-        "validity"
-      ]
-    },
+    "name": "record",
+    "display_fields": [
+      {
+        "header": "Record Created",
+        "type": "display",
+        "fields": ["datetime_record_created"]
+      },
+      {
+        "header": "Recorded Vitals",
+        "type": "display",
+        "fields": [
+          {
+            "name": "Temperature",
+            "id": "temperature",
+            "type": "number",
+            "prefix": { "type": "field", "value": "vitals" },
+            "suffix": { "type": "field", "value": "unit" }
+          },
+          {
+            "name": "Body Position",
+            "id": "body_position",
+            "type": "str"
+          },
+          {
+            "name": "Vitals Type",
+            "id": "vitals_type",
+            "type": "str"
+          }
+        ]
+      },
+      {
+        "header": "Record Validity Score",
+        "fields": [{ "name": "", "id": "validity", "type": "number" }]
+      }
+    ],
     "display_id": {
       "header": "Recorded Created",
-      "fields": [
-        "created_at"
-      ]
+      "fields": ["datetime_record_created"]
     }
   },
   {
-    "name": "Validity"
+    "name": "validity",
+    "type": "input",
+    "fields": [
+      {
+        "name": "",
+        "id": "expert_validity",
+        "type": "number",
+        "min": 0,
+        "max": 5
+      }
+    ]
   }
 ]

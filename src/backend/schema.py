@@ -15,8 +15,7 @@ class BaseRecord:
             setattr(self, k_, v_)
 
     def to_dict(self):
-        d = deepcopy(vars(self))
-        return d
+        return deepcopy(vars(self))
 
 
 def create_dataclass():
@@ -26,8 +25,8 @@ def create_dataclass():
 SCHEMA_FACTORY = {}
 
 for item in schema_config:
-    name = item.pop("name")
-    SCHEMA_FACTORY[name] = create_dataclass()
+    # name = item.pop("name")
+    SCHEMA_FACTORY[item["name"]] = create_dataclass()
 
 
 @dataclass
@@ -50,8 +49,7 @@ class User:
             self.password = stauth.Hasher([self.password]).generate()[0]
 
     def to_dict(self):
-        d = deepcopy(vars(self))
-        return d
+        return deepcopy(vars(self))
 
 
 # TODO: Replace this with dynamically created Schema from app config
