@@ -8,7 +8,7 @@ import src.backend.database as db
 from src.backend.schema import Record
 
 # TODO: Replace this with dynamically created blocks
-from src.backend.schema import SCHEMA_FACTORY
+from src.backend.schema import RECORD_DISPLAY, VALIDITY_DISPLAY
 
 
 @st.cache_data()
@@ -30,6 +30,7 @@ def get_patient_data(limit: int = 5) -> pd.DataFrame:
     return patient_id, data
 
 
+# TODO: Deprecate this
 def patient_data_validation_form() -> None:
     st.write(f'Welcome, **{st.session_state["name"]}**')
     with st.form("entry_form", clear_on_submit=True):
@@ -86,7 +87,6 @@ def patient_data_validation_form() -> None:
             st.experimental_rerun()
 
 
-
 def record_validation_form() -> None:
     st.write(f'Welcome, **{st.session_state["name"]}**')
     with st.form("entry_form", clear_on_submit=True):
@@ -94,27 +94,39 @@ def record_validation_form() -> None:
         st.write(f"#### Patient ID: {patient_id}")
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.write("**Record Created**")
+            st.write(f"**{RECORD_DISPLAY.blocks[0].header}**")
         with col2:
-            st.write("**Recorded Vitals**")
+            st.write(f"**{RECORD_DISPLAY.blocks[1].header}**")
         with col3:
-            st.write("**Record Validity Score**")
+            st.write(f"**{VALIDITY_DISPLAY.fields[0].name}**")
         for i, item in enumerate(patient_data):
-            record = SCHEMA_FACTORY["record"](**item)
+            record = item
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.write(f"{record.datetime_record_created}")
+                for field in RECORD_DISPLAY.blocks[0].fields:
+                    st.write(f"{record[field.id]}")
             with col2:
-                st.write(
-                    f"{record.vitals}: {record.vitals_reading} {record.unit}"
-                )
-                if record.body_position:
-                    st.write(f"Body Position: {record.body_position}")
-                if record.vitals_type:
-                    st.write(f"Vitals Type: {record.vitals_type}")
+                for field in RECORD_DISPLAY.blocks[1].fields:
+                    prefix = (
+                        ""
+                        if not field.prefix
+                        else record[field.prefix.value]
+                        if field.prefix.source == "record"
+                        else field.prefix.value
+                    )
+                    suffix = (
+                        ""
+                        if not field.suffix
+                        else record[field.suffix.value]
+                        if field.suffix.source == "record"
+                        else field.suffix.value
+                    )
+                    record_display = record[field.id]
+                    if record_display != "":
+                        st.write(f"{prefix}: {record_display}{suffix}")
             with col3:
                 score = st.number_input(
-                    f"{record.record_id} Score",
+                    f"{record['record_id']} Score",
                     value=0,
                     step=1,
                     max_value=5,

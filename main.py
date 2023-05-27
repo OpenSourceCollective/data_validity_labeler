@@ -1,7 +1,10 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 
-from src.ui.patient_data_blocks import patient_data_validation_form
+from src.ui.patient_data_blocks import (
+    patient_data_validation_form,
+    record_validation_form,
+)
 from src.backend.database import get_users, get_user
 from src.backend.schema import User
 from src.ui.header import header
@@ -35,7 +38,7 @@ if st.session_state["authentication_status"]:
         with admin_tab:
             st.write("**Manage Users**")
     if show_records:
-        patient_data_validation_form()
+        record_validation_form()
     authenticator.logout("Logout", "main")
 
 elif st.session_state["authentication_status"] == False:

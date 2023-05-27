@@ -4,6 +4,7 @@ import json
 from typing import Dict, Type, TypeVar
 from copy import deepcopy
 import streamlit_authenticator as stauth
+from dacite import from_dict
 
 schema_config = json.load(open("configs/schema.json", "r"))
 
@@ -24,9 +25,50 @@ def create_dataclass():
 
 SCHEMA_FACTORY = {}
 
-for item in schema_config:
-    # name = item.pop("name")
-    SCHEMA_FACTORY[item["name"]] = create_dataclass()
+# for item in schema_config:
+#     SCHEMA_FACTORY[item["name"]] = create_dataclass()
+
+
+@dataclass
+class SourceValue:
+    source: str
+    value: str
+
+
+@dataclass
+class FieldDisplay:
+    id: str
+    type: str
+    name: Optional[str] = None
+    prefix: Optional[SourceValue] = None
+    suffix: Optional[SourceValue] = None
+
+
+@dataclass
+class BlockDisplay:
+    type: str
+    header: str
+    fields: List[FieldDisplay]
+
+
+@dataclass
+class RecordDisplay:
+    type: str
+    blocks: List[BlockDisplay]
+
+
+@dataclass
+class ValidityDisplay:
+    type: str
+    fields: List[FieldDisplay]
+
+
+RECORD_DISPLAY = from_dict(
+    data_class=RecordDisplay, data=schema_config["record"]
+)
+VALIDITY_DISPLAY = from_dict(
+    data_class=ValidityDisplay, data=schema_config["validity"]
+)
 
 
 @dataclass
@@ -87,5 +129,9 @@ class Record:
 
 
 if __name__ == "__main__":
-    print(SCHEMA_FACTORY)
+    record_config = schema_config["record"]
+    # print(record_config)
+    # rd = RecordDisplay(**record_config)
+    rd = from_dict(data_class=RecordDisplay, data=record_config)
+    print(rd)
     pass

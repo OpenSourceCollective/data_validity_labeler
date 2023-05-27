@@ -1,22 +1,27 @@
-[
-  {
-    "name": "record",
-    "display_fields": [
+{
+  "record": {
+    "type": "display",
+    "blocks": [
       {
+        "type": "display",
         "header": "Record Created",
-        "type": "display",
-        "fields": ["datetime_record_created"]
-      },
-      {
-        "header": "Recorded Vitals",
-        "type": "display",
         "fields": [
           {
-            "name": "Temperature",
-            "id": "temperature",
+            "id": "datetime_record_created",
+            "type": "str"
+          }
+        ]
+      },
+      {
+        "type": "display",
+        "header": "Recorded Vitals",
+        "fields": [
+          {
+            "name": "Vital",
+            "id": "vitals_reading",
             "type": "number",
-            "prefix": { "type": "field", "value": "vitals" },
-            "suffix": { "type": "field", "value": "unit" }
+            "prefix": { "source": "record", "value": "vitals" },
+            "suffix": { "source": "record", "value": "unit" }
           },
           {
             "name": "Body Position",
@@ -26,31 +31,23 @@
           {
             "name": "Vitals Type",
             "id": "vitals_type",
-            "type": "str"
+            "type": "str",
+            "prefix": { "source": "config", "value": "Vitals Type" }
           }
         ]
-      },
-      {
-        "header": "Record Validity Score",
-        "fields": [{ "name": "", "id": "validity", "type": "number" }]
       }
-    ],
-    "display_id": {
-      "header": "Recorded Created",
-      "fields": ["datetime_record_created"]
-    }
+    ]
   },
-  {
-    "name": "validity",
+  "validity": {
     "type": "input",
     "fields": [
       {
-        "name": "",
-        "id": "expert_validity",
         "type": "number",
+        "name": "Record Validity Score",
+        "id": "expert_validity",
         "min": 0,
         "max": 5
       }
     ]
   }
-]
+}
