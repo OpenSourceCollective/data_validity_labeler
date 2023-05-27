@@ -38,7 +38,7 @@ if st.session_state["authentication_status"]:
         with admin_tab:
             st.write("**Manage Users**")
     if show_records:
-        record_validation_form()
+        record_validation_form(current_user)
     authenticator.logout("Logout", "main")
 
 elif st.session_state["authentication_status"] == False:

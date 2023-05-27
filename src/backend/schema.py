@@ -9,26 +9,6 @@ from dacite import from_dict
 schema_config = json.load(open("configs/schema.json", "r"))
 
 
-class BaseRecord:
-    def __init__(self, key, /, **kwargs):
-        self.key = key
-        for k_, v_ in kwargs.items():
-            setattr(self, k_, v_)
-
-    def to_dict(self):
-        return deepcopy(vars(self))
-
-
-def create_dataclass():
-    return BaseRecord
-
-
-SCHEMA_FACTORY = {}
-
-# for item in schema_config:
-#     SCHEMA_FACTORY[item["name"]] = create_dataclass()
-
-
 @dataclass
 class SourceValue:
     source: str
@@ -94,9 +74,7 @@ class User:
         return deepcopy(vars(self))
 
 
-# TODO: Replace this with dynamically created Schema from app config
-
-
+# TODO: Depricate the following classes
 @dataclass
 class ExpertValidity:
     expert_id: int
@@ -129,9 +107,4 @@ class Record:
 
 
 if __name__ == "__main__":
-    record_config = schema_config["record"]
-    # print(record_config)
-    # rd = RecordDisplay(**record_config)
-    rd = from_dict(data_class=RecordDisplay, data=record_config)
-    print(rd)
     pass

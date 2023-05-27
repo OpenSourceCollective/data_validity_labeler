@@ -5,10 +5,7 @@ import pandas as pd
 import streamlit as st
 
 import src.backend.database as db
-from src.backend.schema import Record
-
-# TODO: Replace this with dynamically created blocks
-from src.backend.schema import RECORD_DISPLAY, VALIDITY_DISPLAY
+from src.backend.schema import RECORD_DISPLAY, VALIDITY_DISPLAY, Record, User
 
 
 @st.cache_data()
@@ -87,7 +84,7 @@ def patient_data_validation_form() -> None:
             st.experimental_rerun()
 
 
-def record_validation_form() -> None:
+def record_validation_form(user: User) -> None:
     st.write(f'Welcome, **{st.session_state["name"]}**')
     with st.form("entry_form", clear_on_submit=True):
         patient_id, patient_data = get_patient_data(50)
@@ -136,7 +133,7 @@ def record_validation_form() -> None:
                 if score > 0:
                     item["expert_validity"] += [
                         {
-                            "expert_id": 1234,  # TODO: assign unique ids to experts
+                            "expert_id": user.key,
                             "score": score,
                             "created_at": datetime.now().strftime(
                                 "%Y-%m-%d %H:%M:%S"
