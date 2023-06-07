@@ -43,8 +43,12 @@ def record_validation_form(user: User) -> None:
             st.write(f"**{RECORD_DISPLAY.blocks[1].header}**")
         with col3:
             st.write(f"**{VALIDITY_DISPLAY.fields[0].name}**")
+
+        updated_records = []
+        # expert_validities = []
         for i, item in enumerate(record_data):
             record = item
+            record["expert_validity"] = record.get("expert_validity", [])
             col1, col2, col3 = st.columns(3)
             with col1:
                 for field in RECORD_DISPLAY.blocks[0].fields:
@@ -78,7 +82,7 @@ def record_validation_form(user: User) -> None:
                     label_visibility="hidden",
                 )
                 if score > 0:
-                    item["expert_validity"] += [
+                    record["expert_validity"] += [
                         {
                             "expert_id": user.key,
                             "score": score,
@@ -87,6 +91,7 @@ def record_validation_form(user: User) -> None:
                             ),
                         }
                     ]
+            updated_records.append(record)
             st.markdown("---")
 
         submitted = st.form_submit_button(
@@ -94,5 +99,7 @@ def record_validation_form(user: User) -> None:
         )
         if submitted:
             # TODO: submit data to database
+            for record in updated_records:
+                db.insert_record(record)
             st.cache_data.clear()
             st.experimental_rerun()

@@ -56,6 +56,7 @@ def insert_record(record: Dict) -> None:
     Args:
         record (Record): The record object
     """
+    print("\n\nrecord: ", record)
     record_response = record_db.put(record)
     return record_response
 
