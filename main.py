@@ -5,6 +5,7 @@ from src.ui.patient_data_blocks import patient_data_validation_form
 from src.backend.database import get_users, get_user
 from src.backend.schema import User
 from src.ui.header import header
+from src.ui import admin_blocks
 
 users = get_users()
 usernames = {item["username"]: item for item in users}
@@ -17,7 +18,6 @@ authenticator = stauth.Authenticate(
 )
 
 name, authentication_status, username = authenticator.login("Login", "main")
-
 if st.session_state["authentication_status"]:
     header()
     current_user = get_user(username)
@@ -33,9 +33,14 @@ if st.session_state["authentication_status"]:
             ]
         )
         with admin_tab:
-            st.write("**Manage Users**")
-    if show_records:
+            user_management_button = st.button("User Management")
+            admin_blocks.user_management_block()
+            
+        with records_tab:
+            patient_data_validation_form()
+    else:
         patient_data_validation_form()
+    
     authenticator.logout("Logout", "main")
 
 elif st.session_state["authentication_status"] == False:
