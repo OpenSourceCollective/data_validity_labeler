@@ -100,7 +100,6 @@ def record_validation_form(user: User) -> None:
             "Save Data",
         )
         if submitted:
-            # TODO: submit data to database
             for record in updated_records:
                 db.insert_record(record)
             st.cache_data.clear()

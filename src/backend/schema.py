@@ -1,6 +1,6 @@
 import json
 from copy import deepcopy
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional
 
 import streamlit_authenticator as stauth
@@ -86,38 +86,6 @@ class User:
 
     def to_dict(self):
         return deepcopy(vars(self))
-
-
-# TODO: Depricate the following classes
-@dataclass
-class ExpertValidity:
-    expert_id: int
-    score: float
-    created_at: str
-
-
-@dataclass
-class Record:
-    key: int  # explicit dataset key
-    record_id: int
-    patient_id: int
-    vitals: str
-    unit: str
-    loinc_code: str
-    vitals_reading: float
-    body_position: str
-    user_type: str
-    record_created_by: str
-    datetime_record_created: str
-    record_updated_by: str
-    datetime_record_deleted: str
-    record_validity: int
-    timestamp: int
-    vitals_type: str
-    expert_validity: List[ExpertValidity] = field(default_factory=lambda: [])
-
-    def to_dict(self):
-        return {k: v for k, v in asdict(self).items()}
 
 
 if __name__ == "__main__":
