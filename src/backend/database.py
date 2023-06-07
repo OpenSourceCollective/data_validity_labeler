@@ -34,8 +34,17 @@ def get_users() -> None:
 @st.cache_data()
 def get_user(username) -> None:
     records = user_db.fetch({"username": username}, limit=1)
-    return records.items[0]
+    return records.items[0] if records.items else None
 
+@st.cache_data()
+def update_user(user: User) -> None:
+    user_response = user_db.put(user.to_dict())
+    return user_response
+
+@st.cache_data()
+def delete_user(user: User) -> None:
+    user_db.delete(user["key"])
+    return
 
 def insert_record(record: Record) -> None:
     """Insert a record into the database
