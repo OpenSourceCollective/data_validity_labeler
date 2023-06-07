@@ -1,10 +1,7 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 
-from src.ui.patient_data_blocks import (
-    patient_data_validation_form,
-    record_validation_form,
-)
+from ui.record_data_blocks import record_validation_form
 from src.backend.database import get_users, get_user
 from src.backend.schema import User
 from src.ui.header import header
