@@ -48,7 +48,9 @@ def record_validation_form(user: User) -> None:
         # expert_validities = []
         for i, item in enumerate(record_data):
             record = item
-            record["expert_validity"] = record.get("expert_validity", [])
+            record[VALIDITY_DISPLAY.fields[0].id] = record.get(
+                VALIDITY_DISPLAY.fields[0].id, []
+            )
             col1, col2, col3 = st.columns(3)
             with col1:
                 for field in RECORD_DISPLAY.blocks[0].fields:
@@ -82,7 +84,7 @@ def record_validation_form(user: User) -> None:
                     label_visibility="hidden",
                 )
                 if score > 0:
-                    record["expert_validity"] += [
+                    record[VALIDITY_DISPLAY.fields[0].id] += [
                         {
                             "expert_id": user.key,
                             "score": score,
