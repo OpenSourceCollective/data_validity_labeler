@@ -133,11 +133,82 @@ The data record should have three parts:
 }
 ```
 
+The full schema config is shown below:
+
+```json
+{
+  "app_info": {
+    "title": "Health Record Validity Labeler",
+    "icon": ":health_worker:",
+    "description": "This is a simple app to check and label the validity of electronic health records.",
+    "subtitle": "Patient Vitals Validation",
+    "subtitle_description": "*[Insert instructions here]*"
+  },
+  "record": {
+    "type": "display",
+    "record_id": "patients_ids",
+    "query_id": "patient_id",
+    "blocks": [
+      {
+        "type": "display",
+        "header": "Record Created",
+        "fields": [
+          {
+            "id": "datetime_record_created",
+            "type": "str"
+          }
+        ]
+      },
+      {
+        "type": "display",
+        "header": "Recorded Vitals",
+        "fields": [
+          {
+            "name": "Vital",
+            "id": "vitals_reading",
+            "type": "number",
+            "prefix": { "source": "record", "value": "vitals" },
+            "suffix": { "source": "record", "value": "unit" }
+          },
+          {
+            "name": "Body Position",
+            "id": "body_position",
+            "type": "str"
+          },
+          {
+            "name": "Vitals Type",
+            "id": "vitals_type",
+            "type": "str",
+            "prefix": { "source": "config", "value": "Vitals Type" }
+          }
+        ]
+      }
+    ]
+  },
+  "validity": {
+    "type": "input",
+    "fields": [
+      {
+        "type": "number",
+        "name": "Record Validity Score",
+        "id": "expert_validity",
+        "min": 0,
+        "max": 5
+      }
+    ]
+  }
+}
+```
+
+This is translated to the following display:
+![Example Display Image](assets/example_display.png)
+
 ## Usage
 
 - Provide a `.env` file where the environment variables are located.
 - The `DETA_KEY` is the API key for the storage in [Deta space](https://deta.space). It is needed to access the cloud-based database. See the [src/backend/database.py](src/backend/database.py) file for more details on the simple interface to the database.
 - Use the following in the `.env` file:
+- Save your schema config into the [configs/schema.json](configs/schema.json) file.
 
 ```bash
 DETA_KEY=c0wu41vosct_5SUqzfTVqfdjNc4wcWGNeNYZWHDBGu4Y
