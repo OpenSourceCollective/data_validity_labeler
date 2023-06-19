@@ -1,11 +1,11 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 
-from src.ui.patient_data_blocks import patient_data_validation_form
-from src.backend.database import get_users, get_user
+from src.backend.database import get_user, get_users
 from src.backend.schema import User
-from src.ui.header import header
 from src.ui import admin_blocks
+from src.ui.header import header
+from src.ui.record_data_blocks import record_validation_form
 
 users = get_users()
 usernames = {item["username"]: item for item in users}
@@ -24,7 +24,6 @@ if st.session_state["authentication_status"]:
     current_user.pop("password")
     current_user = User(**current_user)
     show_records = True
-    # TODO: Fill admin tab with user management
     if current_user.is_admin:
         records_tab, admin_tab = st.tabs(
             [
@@ -33,14 +32,15 @@ if st.session_state["authentication_status"]:
             ]
         )
         with admin_tab:
+            st.write("**Manage Users**")
             user_management_button = st.button("User Management")
             admin_blocks.user_management_block()
-            
-        with records_tab:
-            patient_data_validation_form()
+        if show_records:
+            with records_tab:
+                record_validation_form(current_user)
     else:
-        patient_data_validation_form()
-    
+        record_validation_form(current_user)
+
     authenticator.logout("Logout", "main")
 
 elif st.session_state["authentication_status"] == False:

@@ -1,22 +1,62 @@
-[
-  {
-    "name": "Record",
-    "display_fields": {
-      "header": "Recorded Vitals",
-      "fields": [
-        "Temperature",
-        "description",
-        "validity"
-      ]
-    },
-    "display_id": {
-      "header": "Recorded Created",
-      "fields": [
-        "created_at"
-      ]
-    }
+{
+  "app_info": {
+    "title": "Health Record Validity Labeler",
+    "icon": ":health_worker:",
+    "description": "This is a simple app to check and label the validity of electronic health records.",
+    "subtitle": "Patient Vitals Validation",
+    "subtitle_description": "*[Insert instructions here]*"
   },
-  {
-    "name": "Validity"
+  "record": {
+    "type": "display",
+    "record_id": "patients_ids",
+    "query_id": "patient_id",
+    "blocks": [
+      {
+        "type": "display",
+        "header": "Record Created",
+        "fields": [
+          {
+            "id": "datetime_record_created",
+            "type": "str"
+          }
+        ]
+      },
+      {
+        "type": "display",
+        "header": "Recorded Vitals",
+        "fields": [
+          {
+            "name": "Vital",
+            "id": "vitals_reading",
+            "type": "number",
+            "prefix": { "source": "record", "value": "vitals" },
+            "suffix": { "source": "record", "value": "unit" }
+          },
+          {
+            "name": "Body Position",
+            "id": "body_position",
+            "type": "str"
+          },
+          {
+            "name": "Vitals Type",
+            "id": "vitals_type",
+            "type": "str",
+            "prefix": { "source": "config", "value": "Vitals Type" }
+          }
+        ]
+      }
+    ]
+  },
+  "validity": {
+    "type": "input",
+    "fields": [
+      {
+        "type": "number",
+        "name": "Record Validity Score",
+        "id": "expert_validity",
+        "min": 0,
+        "max": 5
+      }
+    ]
   }
-]
+}

@@ -24,6 +24,8 @@ colorama==0.4.6
     # via
     #   click
     #   tqdm
+dacite==1.8.1
+    # via -r requirements.in
 decorator==5.1.1
     # via validators
 deta==1.1.0
