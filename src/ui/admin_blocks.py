@@ -1,12 +1,13 @@
-# TODO: create block for managing users
-# def create_user():
-# def delete_user():
-# def update_user():
-
-# imports
 import streamlit as st
-from src.backend.database import create_user, get_users, get_user, update_user, delete_user
+from src.backend.database import (
+    create_user,
+    get_users,
+    get_user,
+    update_user,
+    delete_user,
+)
 from src.backend.schema import User
+
 
 # Create new users
 def create_user_block():
@@ -17,9 +18,11 @@ def create_user_block():
     # TODO: Check if user already exists
     form_data = {
         "username": st.text_input("Username", key="create_username"),
-        "password": st.text_input("Password", key="create_password", type="password"),
+        "password": st.text_input(
+            "Password", key="create_password", type="password"
+        ),
         "is_admin": st.checkbox("Admin", key="create_is_admin"),
-        "is_staff": st.checkbox("Staff", key="create_is_staff")
+        "is_staff": st.checkbox("Staff", key="create_is_staff"),
     }
     if st.button("Create User"):
         if form_data["username"] and form_data["password"]:
@@ -31,10 +34,9 @@ def create_user_block():
     return
 
 
-
 # Delete users
 def delete_user_block():
-    """ 
+    """
     Delete a user
     """
     st.write("**Delete User**")
@@ -62,8 +64,12 @@ def update_user_block():
         if user:
             user = User(**user)
             form_data = {
-                "is_admin": st.checkbox("Admin", key="update_is_admin", value=user.is_admin),
-                "is_staff": st.checkbox("Staff", key="update_is_staff", value=user.is_staff)
+                "is_admin": st.checkbox(
+                    "Admin", key="update_is_admin", value=user.is_admin
+                ),
+                "is_staff": st.checkbox(
+                    "Staff", key="update_is_staff", value=user.is_staff
+                ),
             }
             form_data["username"] = username
             if st.button("Update User"):
@@ -80,6 +86,7 @@ def update_user_block():
         else:
             st.error("User does not exist")
     return
+
 
 # User management block
 def user_management_block():
