@@ -1,4 +1,5 @@
 import json
+import uuid
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import List, Optional
@@ -66,6 +67,22 @@ QUERY_ID = RECORD_DISPLAY.query_id
 
 
 @dataclass
+class Validation:
+    user: str
+    timestamp: str
+    record: str
+    value: float
+    id: Optional[str] = None
+
+    def __post_init__(self):
+        if self.id is None:
+            self.id = str(uuid.uuid4())
+
+    def to_dict(self):
+        return deepcopy(vars(self))
+
+
+@dataclass
 class User:
     username: str
     password: Optional[str] = None
@@ -83,9 +100,13 @@ class User:
             self.key = f"user_{self.username}"
         if self.password is not None:
             self.password = stauth.Hasher([self.password]).generate()[0]
+        self.validations = []
 
     def to_dict(self):
         return deepcopy(vars(self))
+
+    def update_validations(self, validation_id: str):
+        self.validations.append(validation_id)
 
 
 if __name__ == "__main__":

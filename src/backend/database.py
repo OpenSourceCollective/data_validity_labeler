@@ -1,5 +1,6 @@
 import os
 from typing import Dict
+
 import streamlit as st
 from deta import Deta
 from dotenv import load_dotenv
@@ -18,9 +19,15 @@ deta = Deta(DETA_KEY)
 # This is how to create/connect a database
 record_db = deta.Base("ehr_1")
 user_db = deta.Base("ehr_2")
+validation_db = deta.Base("validation_db")
 
 
 def create_user(user: User) -> None:
+    user_response = user_db.put(user.to_dict())
+    return user_response
+
+
+def update_user(user: User) -> None:
     user_response = user_db.put(user.to_dict())
     return user_response
 
@@ -54,11 +61,24 @@ def insert_record(record: Dict) -> None:
     It will update an item if the key already exists.
 
     Args:
-        record (Record): The record object
+        record (Dict): The record object
     """
+
+    # debug:
     print("\n\nrecord: ", record)
     record_response = record_db.put(record)
     return record_response
+
+
+def insert_validation(record: Dict) -> None:
+    """Insert a validation record into the database
+    It will update an item if the key already exists.
+
+    Args:
+        record (Dict): The record object
+    """
+    validation_response = validation_db.put(record)
+    return validation_response
 
 
 def get_record(record_id: str) -> Dict:
