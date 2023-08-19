@@ -225,7 +225,7 @@ streamlit run main.py
 ## TODOs
 
 - [X] Ensure that no repeat validation for the same user
-- [X] User a deterministic data loader such data only unvalidated data from the same user is shown
+- [X] User a deterministic data loader such data only invalidated data from the same user is shown
 - [ ] Comprehensive documentation
 - [ ] Admin data management: Data correction, deletion, etc.
 - [ ] List all available users in the admin section. This will allow for better user management.
