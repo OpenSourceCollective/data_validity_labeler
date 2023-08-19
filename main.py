@@ -22,7 +22,9 @@ if st.session_state["authentication_status"]:
     header()
     current_user = get_user(username)
     current_user.pop("password")
+    validations = current_user.pop("validations")
     current_user = User(**current_user)
+    current_user.validations = validations
     show_records = True
     if current_user.is_admin:
         records_tab, admin_tab = st.tabs(
