@@ -61,7 +61,7 @@ def list_users_block():
     st.write("Registered Users")
     all_users = get_users()
     all_users = pd.DataFrame(all_users[1:])
-    st.write(all_users[["name", "username", "is_admin", "is_staff"]])
+    st.write(all_users[["username", "is_admin", "is_staff"]])
     return
 
 
