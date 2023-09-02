@@ -62,13 +62,17 @@ numpy==1.24.3
     #   pydeck
     #   streamlit
 packaging==23.1
-    # via streamlit
+    # via
+    #   plotly
+    #   streamlit
 pandas==1.5.3
     # via
     #   altair
     #   streamlit
 pillow==9.5.0
     # via streamlit
+plotly==5.16.1
+    # via -r .\requirements.ini
 protobuf==3.20.3
     # via streamlit
 pyarrow==11.0.0
@@ -110,6 +114,8 @@ streamlit==1.21.0
     #   streamlit-authenticator
 streamlit-authenticator==0.2.2
     # via -r .\requirements.ini
+tenacity==8.2.3
+    # via plotly
 toml==0.10.2
     # via streamlit
 toolz==0.12.0

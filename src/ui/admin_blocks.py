@@ -124,7 +124,6 @@ def get_all_data_df() -> pd.DataFrame:
             break
         last = response[-1]["key"]
         all_data += response
-        print("i: ", last)
     return pd.DataFrame(all_data)
 
 
