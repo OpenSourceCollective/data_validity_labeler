@@ -139,7 +139,6 @@ def get_all_data_df() -> pd.DataFrame:
 def analysis_block():
     with st.spinner(text="Loading data... Please wait."):
         all_data = get_all_data_df()
-    st.success("Done!")
     data_size = len(all_data)
     if ANALYSIS_DISPLAY.progress.id in all_data.columns:
         progressed = all_data.dropna(subset=[ANALYSIS_DISPLAY.progress.id])
