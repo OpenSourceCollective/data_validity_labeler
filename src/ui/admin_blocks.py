@@ -7,7 +7,6 @@ from src.backend.database import (
     create_user,
     delete_user,
     fetch_records,
-    get_record_ids,
     get_user,
     get_users,
     update_user,
@@ -115,16 +114,10 @@ def user_management_block():
     return
 
 
-@st.cache_data()
-def get_cache_record_ids() -> int:
-    return get_record_ids()["data"]
-
-
 @st.cache_data(show_spinner=False)
 def get_all_data_df() -> pd.DataFrame:
     all_data = []
     last = None
-    progress_value = 0
     while True:
         response = fetch_records(limit=1000, last=last)
         if len(response) == 0:
