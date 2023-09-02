@@ -226,9 +226,9 @@ streamlit run main.py
 
 - [X] Ensure that no repeat validation for the same user
 - [X] User a deterministic data loader such data only invalidated data from the same user is shown
-- [ ] Comprehensive documentation
+- [X] Comprehensive documentation
+- [X] List all available users in the admin section. This will allow for better user management.
+- [X] Add an analysis section to give a summary of validated data and the general validation progress
 - [ ] Admin data management: Data correction, deletion, etc.
-- [ ] List all available users in the admin section. This will allow for better user management.
-- [ ] Add an analysis section to give a summary of validated data and the general validation progress
 - [ ] Add varieties of validation types for the experts such as text options, remarks, etc.
 - [ ] Replace prints with python logging

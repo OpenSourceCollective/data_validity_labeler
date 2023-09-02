@@ -59,5 +59,14 @@
         "max": 5
       }
     ]
+  },
+  "analysis": {
+    "type": "display",
+    "progress": {
+      "id": "validated",
+      "type": "str",
+      "name": "Expert Validation Progress"
+    },
+    "data_fields": ["user_type", "vitals", "vitals_type"]
   }
 }

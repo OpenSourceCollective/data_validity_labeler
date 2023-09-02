@@ -55,13 +55,17 @@ class ValidityDisplay:
     fields: List[FieldDisplay]
 
 
+@dataclass
+class AnalysisDisplay:
+    type: str
+    progress: FieldDisplay
+    data_fields: List[str]
+
+
 APP_INFO = from_dict(data_class=AppInfo, data=schema_config["app_info"])
-RECORD_DISPLAY = from_dict(
-    data_class=RecordDisplay, data=schema_config["record"]
-)
-VALIDITY_DISPLAY = from_dict(
-    data_class=ValidityDisplay, data=schema_config["validity"]
-)
+RECORD_DISPLAY = from_dict(data_class=RecordDisplay, data=schema_config["record"])
+VALIDITY_DISPLAY = from_dict(data_class=ValidityDisplay, data=schema_config["validity"])
+ANALYSIS_DISPLAY = from_dict(data_class=AnalysisDisplay, data=schema_config["analysis"])
 RECORD_ID = RECORD_DISPLAY.record_id
 QUERY_ID = RECORD_DISPLAY.query_id
 

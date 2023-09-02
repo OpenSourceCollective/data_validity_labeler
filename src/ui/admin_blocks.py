@@ -1,12 +1,18 @@
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
+
 from src.backend.database import (
     create_user,
-    get_users,
-    get_user,
-    update_user,
     delete_user,
+    fetch_records,
+    get_record_ids,
+    get_user,
+    get_users,
+    update_user,
 )
-from src.backend.schema import User
+from src.backend.schema import ANALYSIS_DISPLAY, User
 
 
 # Create new users
@@ -18,9 +24,7 @@ def create_user_block():
     # TODO: Check if user already exists
     form_data = {
         "username": st.text_input("Username", key="create_username"),
-        "password": st.text_input(
-            "Password", key="create_password", type="password"
-        ),
+        "password": st.text_input("Password", key="create_password", type="password"),
         "is_admin": st.checkbox("Admin", key="create_is_admin"),
         "is_staff": st.checkbox("Staff", key="create_is_staff"),
     }
@@ -39,7 +43,6 @@ def delete_user_block():
     """
     Delete a user
     """
-    st.write("**Delete User**")
     username = st.text_input("Username", key="delete_username")
     if username:
         user = get_user(username)
@@ -49,6 +52,17 @@ def delete_user_block():
                 st.success("User deleted successfully")
         else:
             st.error("User does not exist")
+
+
+def list_users_block():
+    """
+    List all users
+    """
+    st.write("Registered Users")
+    all_users = get_users()
+    all_users = pd.DataFrame(all_users[1:])
+    st.write(all_users[["name", "username", "is_admin", "is_staff"]])
+    return
 
 
 # # Update users
@@ -62,6 +76,7 @@ def update_user_block():
     if username:
         user = get_user(username)
         if user:
+            user.pop("validations")
             user = User(**user)
             form_data = {
                 "is_admin": st.checkbox(
@@ -81,8 +96,6 @@ def update_user_block():
                     user.is_staff = form_data["is_staff"]
                 update_user(user)
                 st.success("User updated successfully")
-            else:
-                st.error("Please enter a username and password")
         else:
             st.error("User does not exist")
     return
@@ -92,6 +105,7 @@ def update_user_block():
 def user_management_block():
     block = st.container()
     with block:
+        list_users_block()
         with st.expander("Create New User"):
             create_user_block()
         with st.expander("Delete User"):
@@ -99,3 +113,54 @@ def user_management_block():
         with st.expander("Update User"):
             update_user_block()
     return
+
+
+@st.cache_data()
+def get_cache_record_ids() -> int:
+    return get_record_ids()["data"]
+
+
+@st.cache_data(show_spinner=False)
+def get_all_data_df() -> pd.DataFrame:
+    all_data = []
+    last = None
+    progress_value = 0
+    while True:
+        response = fetch_records(limit=1000, last=last)
+        if len(response) == 0:
+            break
+        last = response[-1]["key"]
+        all_data += response
+        print("i: ", last)
+    return pd.DataFrame(all_data)
+
+
+# Analysis block
+def analysis_block():
+    with st.spinner(text="Loading data... Please wait."):
+        all_data = get_all_data_df()
+    st.success("Done!")
+    data_size = len(all_data)
+    if ANALYSIS_DISPLAY.progress.id in all_data.columns:
+        progressed = all_data.dropna(subset=[ANALYSIS_DISPLAY.progress.id])
+        progress_value = len(progressed) / data_size
+    else:
+        progressed = []
+        progress_value = 0
+    st.progress(
+        progress_value,
+        text=ANALYSIS_DISPLAY.progress.name
+        + ": "
+        + str(len(progressed))
+        + "/"
+        + str(data_size),
+    )
+    show_data = st.checkbox("Show Raw Data")
+    if show_data:
+        st.write(all_data)
+    selected_case = st.selectbox(
+        "Select a data to plot", ANALYSIS_DISPLAY.data_fields, index=0
+    )
+    plot_data = px.bar(all_data, x=selected_case)
+    fig = go.Figure(data=plot_data)
+    st.plotly_chart(fig)

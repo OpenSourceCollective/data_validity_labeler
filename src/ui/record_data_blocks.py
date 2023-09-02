@@ -3,7 +3,6 @@ import time
 from datetime import datetime
 from typing import Optional
 
-import pandas as pd
 import streamlit as st
 
 import src.backend.database as db
@@ -51,9 +50,7 @@ def record_validation_form(user: User) -> None:
     st.write(f'Welcome, **{st.session_state["name"]}**')
     previous_validations = user.validations
     with st.form("entry_form", clear_on_submit=True):
-        record_id, record_data = get_record_data(
-            50, previous=previous_validations
-        )
+        record_id, record_data = get_record_data(50, previous=previous_validations)
         st.write(f"#### Record ID: {record_id}")
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -107,9 +104,7 @@ def record_validation_form(user: User) -> None:
                         {
                             "expert_id": user.key,
                             "score": score,
-                            "created_at": datetime.now().strftime(
-                                "%Y-%m-%d %H:%M:%S"
-                            ),
+                            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         }
                     ]
 

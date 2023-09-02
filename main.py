@@ -25,21 +25,16 @@ if st.session_state["authentication_status"]:
     validations = current_user.pop("validations")
     current_user = User(**current_user)
     current_user.validations = validations
-    show_records = True
     if current_user.is_admin:
-        records_tab, admin_tab = st.tabs(
-            [
-                "Records",
-                "Admin",
-            ]
-        )
+        records_tab, admin_tab, analysis_tab = st.tabs(["Records", "Admin", "Analysis"])
+        with records_tab:
+            record_validation_form(current_user)
         with admin_tab:
             st.write("**Manage Users**")
-            user_management_button = st.button("User Management")
             admin_blocks.user_management_block()
-        if show_records:
-            with records_tab:
-                record_validation_form(current_user)
+        with analysis_tab:
+            st.write("**Records Analysis**")
+            admin_blocks.analysis_block()
     else:
         record_validation_form(current_user)
 
