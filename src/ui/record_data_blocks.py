@@ -43,6 +43,7 @@ def get_record_data(
             got_data = True
             if data[0].get("validated", None) is None:
                 record_is_not_validated = False
+        time.sleep(0.1)
     return record_id, data
 
 
@@ -135,6 +136,3 @@ def record_validation_form(user: User) -> None:
                 db.insert_validation(validation.to_dict())
                 user.update_validations(validation.id)
             db.update_user(user)
-
-            # st.cache_data.clear()
-            st.experimental_rerun()

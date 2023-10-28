@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -87,12 +88,9 @@ def update_user_block():
             }
             form_data["username"] = username
             if st.button("Update User"):
-                if form_data["username"]:
-                    user.username = form_data["username"]
-                if form_data["is_admin"]:
-                    user.is_admin = form_data["is_admin"]
-                if form_data["is_staff"]:
-                    user.is_staff = form_data["is_staff"]
+                user.username = form_data["username"]
+                user.is_admin = form_data["is_admin"]
+                user.is_staff = form_data["is_staff"]
                 update_user(user)
                 st.success("User updated successfully")
         else:
@@ -124,34 +122,42 @@ def get_all_data_df() -> pd.DataFrame:
             break
         last = response[-1]["key"]
         all_data += response
+        time.sleep(0.1)
     return pd.DataFrame(all_data)
 
 
 # Analysis block
 def analysis_block():
-    with st.spinner(text="Loading data... Please wait."):
-        all_data = get_all_data_df()
-    data_size = len(all_data)
-    if ANALYSIS_DISPLAY.progress.id in all_data.columns:
-        progressed = all_data.dropna(subset=[ANALYSIS_DISPLAY.progress.id])
-        progress_value = len(progressed) / data_size
-    else:
-        progressed = []
-        progress_value = 0
-    st.progress(
-        progress_value,
-        text=ANALYSIS_DISPLAY.progress.name
-        + ": "
-        + str(len(progressed))
-        + "/"
-        + str(data_size),
+    show_analysis = st.checkbox("Show Analysis")
+    st.write(
+        "Please note that this section is computationally intensive and may take a while to load."
     )
-    show_data = st.checkbox("Show Raw Data")
-    if show_data:
-        st.write(all_data)
-    selected_case = st.selectbox(
-        "Select a data to plot", ANALYSIS_DISPLAY.data_fields, index=0
-    )
-    plot_data = px.bar(all_data, x=selected_case)
-    fig = go.Figure(data=plot_data)
-    st.plotly_chart(fig)
+    if show_analysis:
+        with st.spinner(
+            text="Loading data... This will take some time, please be patient. You can do other things while loading."
+        ):
+            all_data = get_all_data_df()
+        data_size = len(all_data)
+        if ANALYSIS_DISPLAY.progress.id in all_data.columns:
+            progressed = all_data.dropna(subset=[ANALYSIS_DISPLAY.progress.id])
+            progress_value = len(progressed) / data_size
+        else:
+            progressed = []
+            progress_value = 0
+        st.progress(
+            progress_value,
+            text=ANALYSIS_DISPLAY.progress.name
+            + ": "
+            + str(len(progressed))
+            + "/"
+            + str(data_size),
+        )
+        show_data = st.checkbox("Show Raw Data")
+        if show_data:
+            st.write(all_data)
+        selected_case = st.selectbox(
+            "Select a data to plot", ANALYSIS_DISPLAY.data_fields, index=0
+        )
+        plot_data = px.bar(all_data, x=selected_case)
+        fig = go.Figure(data=plot_data)
+        st.plotly_chart(fig)

@@ -35,6 +35,13 @@ if st.session_state["authentication_status"]:
         with analysis_tab:
             st.write("**Records Analysis**")
             admin_blocks.analysis_block()
+    elif current_user.is_staff:
+        records_tab, admin_tab, analysis_tab = st.tabs(["Records", "Analysis"])
+        with records_tab:
+            record_validation_form(current_user)
+        with analysis_tab:
+            st.write("**Records Analysis**")
+            admin_blocks.analysis_block()
     else:
         record_validation_form(current_user)
 
