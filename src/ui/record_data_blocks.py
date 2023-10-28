@@ -134,5 +134,5 @@ def record_validation_form(user: User) -> None:
                 db.insert_record(record)
             for validation in validations:
                 db.insert_validation(validation.to_dict())
-                user.update_validations(validation.id)
+                user.update_validations(str(validation.id))
             db.update_user(user)
