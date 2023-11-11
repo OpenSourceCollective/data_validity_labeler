@@ -22,7 +22,7 @@ authenticator = stauth.Authenticate(
 name, authentication_status, username = authenticator.login("Login", "main")
 if st.session_state["authentication_status"]:
     header()
-    current_user = get_user(username)
+    current_user = get_user(name)
     current_user.pop("password")
     validations = current_user.pop("validations")
     current_user = User(**current_user)
