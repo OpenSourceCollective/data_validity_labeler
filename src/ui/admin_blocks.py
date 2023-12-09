@@ -1,4 +1,5 @@
 import time
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -24,7 +25,9 @@ def create_user_block():
     # TODO: Check if user already exists
     form_data = {
         "username": st.text_input("Username", key="create_username"),
-        "password": st.text_input("Password", key="create_password", type="password"),
+        "password": st.text_input(
+            "Password", key="create_password", type="password"
+        ),
         "is_admin": st.checkbox("Admin", key="create_is_admin"),
         "is_staff": st.checkbox("Staff", key="create_is_staff"),
     }
@@ -161,3 +164,11 @@ def analysis_block():
         plot_data = px.bar(all_data, x=selected_case)
         fig = go.Figure(data=plot_data)
         st.plotly_chart(fig)
+
+
+# Example of how to add a new block
+# def dataset_block():
+#     st.write("This is the dataset block")
+#     # return
+#     dataset = pd.read_csv("dataset__local/stable-status.csv")
+#     st.write(dataset)

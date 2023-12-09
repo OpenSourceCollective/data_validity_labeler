@@ -18,7 +18,8 @@ DETA_KEY = os.getenv("DETA_KEY")
 deta = Deta(DETA_KEY)
 
 # This is how to create/connect a database
-record_db = deta.Base("ehr_1")
+RECORD_DB_ID = "small_ehr_1"
+record_db = deta.Base(RECORD_DB_ID)
 user_db = deta.Base("ehr_2")
 validation_db = deta.Base("validation_db")
 
@@ -56,7 +57,7 @@ def insert_record(record: Dict) -> None:
     Args:
         record (Dict): The record object
     """
-    record_response = deta.Base("ehr_1").put(record)
+    record_response = deta.Base(RECORD_DB_ID).put(record)
     return record_response
 
 
@@ -80,10 +81,12 @@ def get_record(record_id: str) -> Dict:
     Returns:
         Record: The record object
     """
-    return deta.Base("ehr_1").get(record_id)
+    return deta.Base(RECORD_DB_ID).get(record_id)
 
 
-def fetch_records(query: dict = None, limit: int = 1, last: str = None) -> list:
+def fetch_records(
+    query: dict = None, limit: int = 1, last: str = None
+) -> list:
     """Retrieve a list of items matching the query
 
     Args:
@@ -98,7 +101,7 @@ def fetch_records(query: dict = None, limit: int = 1, last: str = None) -> list:
     if dict is None:
         query = {}
     try:
-        records = deta.Base("ehr_1").fetch(query, limit=limit, last=last)
+        records = deta.Base(RECORD_DB_ID).fetch(query, limit=limit, last=last)
         return records.items
     except (client.CannotSendRequest, client.ResponseNotReady) as e:
         print(e)
@@ -111,7 +114,7 @@ def get_record_ids() -> list:
     Returns:
         list: A list of record ids
     """
-    return deta.Base("ehr_1").get(RECORD_ID)
+    return deta.Base(RECORD_DB_ID).get(RECORD_ID)
 
 
 if __name__ == "__main__":

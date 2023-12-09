@@ -4,7 +4,7 @@
     "icon": ":health_worker:",
     "description": "This is a simple app to check and label the validity of electronic health records.",
     "subtitle": "Patient Vitals Validation",
-    "subtitle_description": "*[Insert instructions here]*",
+    "subtitle_description": "*Assign a validity score to each record and click save data to upload the result. A new record will be loaded after each upload. Check the Analysis tab to under stand more about the data*",
     "max_validations": 10
   },
   "record": {

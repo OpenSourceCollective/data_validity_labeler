@@ -224,11 +224,15 @@ streamlit run main.py
 
 ## TODOs
 
-- [X] Ensure that no repeat validation for the same user
-- [X] User a deterministic data loader such data only invalidated data from the same user is shown
-- [X] Comprehensive documentation
-- [X] List all available users in the admin section. This will allow for better user management.
-- [X] Add an analysis section to give a summary of validated data and the general validation progress
+- [ ] Demo with a smaller dataset
+- [ ] Remove authentication
+- [ ] Add anomaly detection in validity checking
 - [ ] Admin data management: Data correction, deletion, etc.
 - [ ] Add varieties of validation types for the experts such as text options, remarks, etc.
 - [ ] Replace prints with python logging
+
+## Roadmap
+
+- [ ] Adopt a name for the tool
+- [ ] Make the tool more stable and usable for end users
+- [ ]
