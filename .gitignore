@@ -169,3 +169,4 @@ cython_debug/
 requirements.in
 *__local*
 archive
+.history

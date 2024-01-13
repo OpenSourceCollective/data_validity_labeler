@@ -224,8 +224,8 @@ streamlit run main.py
 
 ## TODOs
 
-- [ ] Demo with a smaller dataset
-- [ ] Remove authentication
+- [X] Demo with a smaller dataset
+- [X] Remove authentication
 - [ ] Add anomaly detection in validity checking
 - [ ] Admin data management: Data correction, deletion, etc.
 - [ ] Add varieties of validation types for the experts such as text options, remarks, etc.
@@ -235,4 +235,3 @@ streamlit run main.py
 
 - [ ] Adopt a name for the tool
 - [ ] Make the tool more stable and usable for end users
-- [ ]

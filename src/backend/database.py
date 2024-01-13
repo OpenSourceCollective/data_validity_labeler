@@ -98,8 +98,6 @@ def fetch_records(
         list: _description_
     """
 
-    if dict is None:
-        query = {}
     try:
         records = deta.Base(RECORD_DB_ID).fetch(query, limit=limit, last=last)
         return records.items
