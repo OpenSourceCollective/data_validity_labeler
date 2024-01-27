@@ -1,10 +1,11 @@
 import os
 from http import client
 from typing import Dict
-
+import time
 import streamlit as st
 from deta import Deta
 from dotenv import load_dotenv
+import pandas as pd
 
 from src.backend.schema import RECORD_ID, User
 
@@ -22,6 +23,20 @@ RECORD_DB_ID = "small_ehr_1"
 record_db = deta.Base(RECORD_DB_ID)
 user_db = deta.Base("ehr_2")
 validation_db = deta.Base("validation_db")
+
+
+@st.cache_data(show_spinner=False)
+def get_all_data_df() -> pd.DataFrame:
+    all_data = []
+    last = None
+    while True:
+        response = fetch_records(limit=1000, last=last)
+        if len(response) == 0:
+            break
+        last = response[-1]["key"]
+        all_data += response
+        time.sleep(0.1)
+    return pd.DataFrame(all_data)
 
 
 def create_user(user: User) -> None:
