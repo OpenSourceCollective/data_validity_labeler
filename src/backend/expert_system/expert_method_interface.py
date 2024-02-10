@@ -1,9 +1,11 @@
 from typing import Dict, List, Tuple
 
 
-def example_method(
-    data: list[Dict], limits: Dict[str]
-) -> Tuple[int, List[Dict]]:
+def expert_system_method(
+    data: list[Dict], limits: Dict[float], vitals: List[str], field_check: bool = False, patient_check:bool = False
+) -> Tuple[List], pd.Dataframe:
+
+
     """This is an example method for an expert system method. Your method should should follow this format.
 
     Args:
@@ -13,4 +15,6 @@ def example_method(
     Returns:
         Tuple[int, List[Dict]]: Number of relevant records and a list of suspect records.
     """
+
+
     return NotImplementedError
