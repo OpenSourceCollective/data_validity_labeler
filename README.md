@@ -2,6 +2,12 @@
 
 This project is a web-based data validator tool. It allows users to validate data records through a published web application that can be accessed by expert validators from anywhere in the world.
 
+### Features
+- **User-Friendly Interface:** A simple and efficient UI designed for professionals and non-professionals alike.
+- **Global Accessibility:** Can be accessed by expert validators from anywhere in the world.
+- **Real-time Validation:** Offers immediate feedback on the validation status of the data.
+- **Expert System:** Offers pre-validation with an expert system
+
 ## Set up
 
 Create a Python environment and install the dependencies:
