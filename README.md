@@ -211,7 +211,7 @@ This is translated to the following display:
 - Save your schema config into the [configs/schema.json](configs/schema.json) file.
 
 ```bash
-DETA_KEY=c0wu41vosct_5SUqzfTVqfdjNc4wcWGNeNYZWHDBGu4Y
+DETA_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 > Note that the above key will be replaced in production. It should be used only for testing purposes.
@@ -222,16 +222,3 @@ DETA_KEY=c0wu41vosct_5SUqzfTVqfdjNc4wcWGNeNYZWHDBGu4Y
 streamlit run main.py
 ```
 
-## TODOs
-
-- [X] Demo with a smaller dataset
-- [X] Remove authentication
-- [ ] Add anomaly detection in validity checking
-- [ ] Admin data management: Data correction, deletion, etc.
-- [ ] Add varieties of validation types for the experts such as text options, remarks, etc.
-- [ ] Replace prints with python logging
-
-## Roadmap
-
-- [ ] Adopt a name for the tool
-- [ ] Make the tool more stable and usable for end users
